@@ -3,7 +3,6 @@
  *************************************************************************************************/
 plugins {
     id 'com.android.library'
-    id 'com.jfrog.artifactory'
     id 'maven-publish'
     id 'com.palantir.git-version' version '3.0.0'
 }
@@ -106,7 +105,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation "com.${System.getenv('GITHUB_ACTOR')}:androidlibrary:1.0.0.-SNAPSHOT"
+    implementation "com.${System.getenv('GITHUB_ACTOR')}:androidlibrary:1.0.0-SNAPSHOT"
 
 //    if (libraryProjectPath.exists() && gradle.useLocal) { // Local project is favoured
 //        implementation project(libraryProjectName)
@@ -145,21 +144,7 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "GithubPackages"
-            url = "https://maven.pkg.github.com/${System.getenv('GITHUB_ACTOR')}/androidcommon"
 
-            credentials {
-                username = System.getenv('GITHUB_ACTOR')
-                password = System.getenv('GITHUB_TOKEN')
-            }
-        }
-//        ivy {
-//            ivyPattern('[organisation]/[module]/[revision]/ivy-[revision].xml')
-//            artifactPattern('[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]')
-//        }
-    }
 }
 
 
@@ -193,8 +178,3 @@ task spawnCommonDemoBasicArchives(type: Jar) {
     }
 }
 publish.dependsOn(spawnCommonSnapshotBasicArchives)
-
-artifactoryPublish.mustRunAfter('spawnCommonSnapshotBasicArchives')
-artifactoryPublish.mustRunAfter('spawnCommonDemoBasicArchives')
-artifactoryPublish.mustRunAfter('connectedSnapshotBasicDebugAndroidTest')
-artifactoryPublish.mustRunAfter('connectedDemoBasicDebugAndroidTest')
