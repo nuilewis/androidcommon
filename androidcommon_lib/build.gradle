@@ -106,11 +106,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation "com.${System.getenv('GITHUB_ACTOR')}:androidlibrary:1.0.0.-SNAPSHOT"
 
-    if (libraryProjectPath.exists() && gradle.useLocal) { // Local project is favoured
-        implementation project(libraryProjectName)
-    } else {
-        implementation "com.${System.getenv('GITHUB_ACTOR')}.androidlibrary:1.+"
+//    if (libraryProjectPath.exists() && gradle.useLocal) { // Local project is favoured
+//        implementation project(libraryProjectName)
+//    } else {
+
 
 //        demoImplementation(group: groupId, name: libraryDemoArtifactName, classifier: demoRelease,
 //                    version: latestVersion, ext: 'aar')
@@ -118,12 +119,11 @@ dependencies {
 //                      version: masterArtifactVersion, ext: 'aar')
 //        snapshotImplementation(group: groupId, name: librarySnapshotArtifactName,
 //                classifier: snapshotRelease, version: latestVersion, ext: 'aar')
-   }
+//   }
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
-
 }
 
 publishing {
@@ -131,7 +131,7 @@ publishing {
         aarRelease(MavenPublication) {
             groupId = "com.${System.getenv('GITHUB_ACTOR')}"
             artifactId = 'androidcommon'
-            version = "1.0.0-$projectDetails.gitHash-SNAPSHOT"
+            version = "1.0.0-SNAPSHOT"
             afterEvaluate{
                 artifact spawnCommonSnapshotBasicArchives
             }
@@ -139,7 +139,7 @@ publishing {
         aarDebug(MavenPublication) {
             groupId = "com.${System.getenv('GITHUB_ACTOR')}"
             artifactId = 'androidcommon'
-            version = "1.0.0-$projectDetails.gitHash-SNAPSHOT-DEBUG"
+            version = "1.0.0-SNAPSHOT-DEBUG"
             afterEvaluate{
                 artifact spawnCommonSnapshotBasicArchives
             }
@@ -155,10 +155,10 @@ publishing {
                 password = System.getenv('GITHUB_TOKEN')
             }
         }
-        ivy {
-            ivyPattern('[organisation]/[module]/[revision]/ivy-[revision].xml')
-            artifactPattern('[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]')
-        }
+//        ivy {
+//            ivyPattern('[organisation]/[module]/[revision]/ivy-[revision].xml')
+//            artifactPattern('[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]')
+//        }
     }
 }
 
