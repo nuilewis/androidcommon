@@ -105,20 +105,18 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation "com.${System.getenv('GITHUB_ACTOR')}:androidlibrary:1.0.0-SNAPSHOT"
-
-//    if (libraryProjectPath.exists() && gradle.useLocal) { // Local project is favoured
-//        implementation project(libraryProjectName)
-//    } else {
-
-
+    if (libraryProjectPath.exists() && gradle.useLocal) { // Local project is favoured
+        implementation project(libraryProjectName)
+    } else {
+        ///Todo: properly specify all flavour implementations of the androidLibrary
+        implementation 'org.opendatakit:androidlibrary_lib:1.0.1:snapshotBasicRelease@aar'
 //        demoImplementation(group: groupId, name: libraryDemoArtifactName, classifier: demoRelease,
 //                    version: latestVersion, ext: 'aar')
 //        masterImplementation(group: groupId, name: libraryMasterArtifactName, classifier: masterRelease,
 //                      version: masterArtifactVersion, ext: 'aar')
 //        snapshotImplementation(group: groupId, name: librarySnapshotArtifactName,
 //                classifier: snapshotRelease, version: latestVersion, ext: 'aar')
-//   }
+ }
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'
