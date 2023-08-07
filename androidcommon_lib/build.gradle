@@ -16,7 +16,7 @@ if ((new File(gradle.local)).exists()) {
 libraryScripts.each {
     apply from: it
 }
-//Get project details using gitVersion
+//Get project details using gitVersion plugin
 def projectDetails = versionDetails()
 
 group = groupId
@@ -109,7 +109,7 @@ dependencies {
         implementation project(libraryProjectName)
     } else {
         ///Todo: properly specify all flavour implementations of the androidLibrary
-        implementation 'org.opendatakit:androidlibrary_lib:1.0.1:snapshotBasicRelease@aar'
+        implementation(group:'org.opendatakit', name: 'androidlibrary_lib', classifier: 'snapshotBasicRelease', version: '+', ext: 'aar')
 //        demoImplementation(group: groupId, name: libraryDemoArtifactName, classifier: demoRelease,
 //                    version: latestVersion, ext: 'aar')
 //        masterImplementation(group: groupId, name: libraryMasterArtifactName, classifier: masterRelease,
@@ -140,7 +140,7 @@ publishing {
         aarRelease(MavenPublication) {
             groupId = "org.opendatakit"
             artifactId = 'androidcommon'
-            version = "1.0.0"
+            version = "1.0.0-${projectDetails.gitHash}"
             afterEvaluate{
                 artifact spawnCommonSnapshotBasicArchives
             }
@@ -148,7 +148,7 @@ publishing {
         aarDebug(MavenPublication) {
             groupId = "org.opendatakit"
             artifactId = 'androidcommon'
-            version = "1.0.0-Debug"
+            version = "1.0.0-debug-${projectDetails.gitHash}"
             afterEvaluate{
                 artifact spawnCommonSnapshotBasicArchives
             }
@@ -171,6 +171,7 @@ task spawnCommonSnapshotBasicArchives(type: Jar) {
 
         project.getArtifacts().add("default", bundleSnapshotBasicDebugAar)
     }
+    archiveExtension = 'aar'
 }
 
 task spawnCommonDemoBasicArchives(type: Jar) {
@@ -186,5 +187,6 @@ task spawnCommonDemoBasicArchives(type: Jar) {
 
         project.getArtifacts().add("default", bundleDemoBasicDebugAar)
     }
+    archiveExtension = 'aar'
 }
 publish.dependsOn(spawnCommonSnapshotBasicArchives)
