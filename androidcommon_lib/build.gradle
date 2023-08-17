@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 /**************************************************************************************************
                                         GRADLE CONFIG
  *************************************************************************************************/
@@ -18,6 +20,8 @@ libraryScripts.each {
 }
 //Get project details using gitVersion plugin
 def projectDetails = versionDetails()
+def date = new SimpleDateFormat("yyyyMMddHHmmss")
+String formattedDate = date.format(new Date())
 
 group = groupId
 
@@ -109,7 +113,7 @@ dependencies {
         implementation project(libraryProjectName)
     } else {
         ///Todo: properly specify all flavour implementations of the androidLibrary
-        implementation(group:'org.opendatakit', name: 'androidlibrary_lib', classifier: 'snapshotBasicRelease', version: '+', ext: 'aar')
+        implementation(group:'org.opendatakit', name: 'androidlibrary_lib', classifier: 'snapshotBasicRelease', version: '1.0.0-+', ext: 'aar')
 //        demoImplementation(group: groupId, name: libraryDemoArtifactName, classifier: demoRelease,
 //                    version: latestVersion, ext: 'aar')
 //        masterImplementation(group: groupId, name: libraryMasterArtifactName, classifier: masterRelease,
@@ -140,7 +144,7 @@ publishing {
         aarRelease(MavenPublication) {
             groupId = "org.opendatakit"
             artifactId = 'androidcommon'
-            version = "1.0.0-${projectDetails.gitHash}"
+            version = "1.0.0-${formattedDate}-${projectDetails.gitHash}"
             afterEvaluate{
                 artifact spawnCommonSnapshotBasicArchives
             }
@@ -148,7 +152,7 @@ publishing {
         aarDebug(MavenPublication) {
             groupId = "org.opendatakit"
             artifactId = 'androidcommon'
-            version = "1.0.0-debug-${projectDetails.gitHash}"
+            version = "1.0.0-debug-${formattedDate}-${projectDetails.gitHash}"
             afterEvaluate{
                 artifact spawnCommonSnapshotBasicArchives
             }
